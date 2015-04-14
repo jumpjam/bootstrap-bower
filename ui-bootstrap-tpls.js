@@ -3742,22 +3742,26 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           return;
         }
 
-        evt.preventDefault();
-
         if (evt.which === 40) {
+          evt.preventDefault();
           scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
           scope.$digest();
 
         } else if (evt.which === 38) {
+          evt.preventDefault();
           scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
           scope.$digest();
 
-        } else if (evt.which === 13 || evt.which === 9) {
+        }
+        //enter(13) and tab(9) - ensure an active (focused) option is selected
+        else if ((evt.which === 13 || evt.which === 9) && scope.activeIdx > -1) {          
+          evt.preventDefault();
           scope.$apply(function () {
             scope.select(scope.activeIdx);
           });
-
-        } else if (evt.which === 27) {
+        }
+        else if (evt.which === 27) {
+          evt.preventDefault();
           evt.stopPropagation();
 
           resetMatches();
